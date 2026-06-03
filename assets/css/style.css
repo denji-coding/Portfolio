@@ -299,28 +299,72 @@ nav {
 
 /* Hero card */
 .hero-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
+  border: none;
   border-radius: 16px;
   padding: 40px 32px;
-  backdrop-filter: blur(20px);
-  box-shadow: var(--glow-blue);
   position: relative;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
+  isolation: isolate;
+  box-shadow: var(--glow-blue);
 }
 
 .hero-card::before {
   content: "";
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+  left: 50%;
+  top: 50%;
+  width: 160%;
+  height: 160%;
+  transform: translate(-50%, -50%);
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    var(--cyan) 70deg,
+    var(--blue) 140deg,
+    var(--purple) 210deg,
+    transparent 280deg,
+    transparent 360deg
+  );
+  animation: heroCardBorderRun 3.5s linear infinite;
+  z-index: 0;
+}
+
+.hero-card::after {
+  content: "";
+  position: absolute;
+  inset: 2px;
+  border-radius: 14px;
+  background: linear-gradient(165deg, rgba(8, 15, 28, 0.98), rgba(5, 10, 18, 0.96));
+  backdrop-filter: blur(20px);
+  z-index: 0;
+}
+
+.hero-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes heroCardBorderRun {
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-card::before {
+    animation: none;
+    background: linear-gradient(90deg, transparent, var(--cyan), var(--blue), var(--purple), transparent);
+    width: 100%;
+    height: 100%;
+    inset: 0;
+    left: 0;
+    top: 0;
+    transform: none;
+  }
 }
 
 .avatar {
